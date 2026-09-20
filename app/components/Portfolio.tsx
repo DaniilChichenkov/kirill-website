@@ -1,8 +1,23 @@
 import { MoveUpRight } from "lucide-react";
 import Wedding from "~/src/wedding-example.jpg";
 import Car from "~/src/car.jpg";
+import type { Route } from "../+types/root";
+import { Link, useNavigate, useParams } from "react-router";
+
+const supportedLanguages = ["ru", "et", "en"];
 
 const Portfolio = () => {
+  const { lang } = useParams();
+  const nav = useNavigate();
+
+  const handleNav = () => {
+    if (!lang || !supportedLanguages.includes(lang)) {
+      nav("/et/works");
+    } else {
+      nav(`/${lang}/works`);
+    }
+  };
+
   return (
     <section>
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
@@ -15,12 +30,12 @@ const Portfolio = () => {
               <h2 className="text-3xl md:text-4xl font-semibold text-gray-900">
                 Stores in motion.
               </h2>
-              <a
-                className="hidden lg:flex justify-center items-center gap-x-3 px-5 py-3 font-medium text-blue-500 transition-colors hover:text-blue-900"
-                href="#"
+              <button
+                onClick={handleNav}
+                className="lg:flex hidden cursor-pointer justify-center items-center gap-x-3 px-5 py-3 font-medium text-blue-500 transition-colors hover:text-blue-900"
               >
                 View more films <MoveUpRight />
-              </a>
+              </button>
             </div>
           </div>
 
@@ -108,12 +123,12 @@ const Portfolio = () => {
             </div>
 
             {/* More films link */}
-            <a
-              className="flex lg:hidden justify-center items-center gap-x-3 px-5 py-3 font-medium text-blue-500 transition-colors hover:text-blue-900"
-              href="#"
+            <button
+              onClick={handleNav}
+              className="flex lg:hidden cursor-pointer justify-center items-center gap-x-3 px-5 py-3 font-medium text-blue-500 transition-colors hover:text-blue-900"
             >
               View more films <MoveUpRight />
-            </a>
+            </button>
           </div>
         </div>
       </div>

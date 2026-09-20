@@ -99,7 +99,13 @@ const questionsMap = new Map([
   ],
 ]);
 
-const Question = () => {
+const Question = ({
+  headerText,
+  subHeaderText,
+}: {
+  headerText: string;
+  subHeaderText: string;
+}) => {
   const [currentQuestionId, setCurrentQuestionId] = useState(0);
   const currentQuestion = questionsMap.get(currentQuestionId);
 
@@ -149,12 +155,10 @@ const Question = () => {
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
           <div className="md:py-4">
             <h2 className="text-3xl md:text-4xl font-semibold text-gray-900 sm:text-3xl text-left">
-              What are we creating?
+              {headerText}
             </h2>
 
-            <p className="mt-4 text-pretty text-gray-700">
-              A few quick questions to plan your film.
-            </p>
+            <p className="mt-4 text-pretty text-gray-700">{subHeaderText}</p>
           </div>
 
           <div>

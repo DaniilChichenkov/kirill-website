@@ -1,6 +1,5 @@
 import type { Route } from "./+types/home";
 import {
-  NavigationComponent,
   Hero,
   Header,
   NiceText,
@@ -11,18 +10,21 @@ import {
 
 export const loader = async ({ params }: Route.LoaderArgs) => {
   console.log("Home loader caught");
+  return null;
 };
 
 const HomeRoute = () => {
   return (
-    <NavigationComponent>
+    <>
       <Hero />
       <Header />
       <NiceText />
       <Portfolio />
-      <Questions />
-      <Footer />
-    </NavigationComponent>
+      <Questions
+        headerText="What are we creating?"
+        subHeaderText="A few quick questions to plan your film."
+      />
+    </>
   );
 };
 
