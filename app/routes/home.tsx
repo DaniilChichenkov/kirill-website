@@ -5,7 +5,7 @@ import {
   NiceText,
   Portfolio,
   Questions,
-  Footer,
+  Feedback,
 } from "~/components";
 
 export const loader = async ({ params }: Route.LoaderArgs) => {
@@ -17,13 +17,13 @@ const HomeRoute = () => {
   return (
     <>
       <Hero />
-      <Header />
-      <NiceText />
-      <Portfolio />
       <Questions
         headerText="What are we creating?"
         subHeaderText="A few quick questions to plan your film."
       />
+      <Feedback />
+      <NiceText />
+      <Portfolio />
     </>
   );
 };

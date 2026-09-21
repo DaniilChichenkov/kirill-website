@@ -2,20 +2,18 @@ import { MoveUpRight } from "lucide-react";
 import Wedding from "~/src/wedding-example.jpg";
 import Car from "~/src/car.jpg";
 import type { Route } from "../+types/root";
-import { Link, useNavigate, useParams } from "react-router";
+import { Link, useParams } from "react-router";
 
 const supportedLanguages = ["ru", "et", "en"];
 
 const Portfolio = () => {
   const { lang } = useParams();
-  const nav = useNavigate();
 
-  const handleNav = () => {
+  const getValidPath = () => {
     if (!lang || !supportedLanguages.includes(lang)) {
-      nav("/et/works");
-    } else {
-      nav(`/${lang}/works`);
+      return "/et/works";
     }
+    return `/${lang}/works`;
   };
 
   return (
@@ -30,12 +28,12 @@ const Portfolio = () => {
               <h2 className="text-3xl md:text-4xl font-semibold text-gray-900">
                 Stores in motion.
               </h2>
-              <button
-                onClick={handleNav}
+              <Link
+                to={getValidPath()}
                 className="lg:flex hidden cursor-pointer justify-center items-center gap-x-3 px-5 py-3 font-medium text-blue-500 transition-colors hover:text-blue-900"
               >
                 View more films <MoveUpRight />
-              </button>
+              </Link>
             </div>
           </div>
 
@@ -123,12 +121,12 @@ const Portfolio = () => {
             </div>
 
             {/* More films link */}
-            <button
-              onClick={handleNav}
+            <Link
+              to={getValidPath()}
               className="flex lg:hidden cursor-pointer justify-center items-center gap-x-3 px-5 py-3 font-medium text-blue-500 transition-colors hover:text-blue-900"
             >
               View more films <MoveUpRight />
-            </button>
+            </Link>
           </div>
         </div>
       </div>
