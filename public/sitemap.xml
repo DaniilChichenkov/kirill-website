@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+  <!-- Home -->
+  <url>
+    <loc>https://yourdomain.com/et</loc>
+  </url>
+
+  <url>
+    <loc>https://yourdomain.com/en</loc>
+  </url>
+
+  <url>
+    <loc>https://yourdomain.com/ru</loc>
+  </url>
+
+
+  <!-- Portfolio -->
+  <url>
+    <loc>https://yourdomain.com/et/works</loc>
+  </url>
+
+  <url>
+    <loc>https://yourdomain.com/en/works</loc>
+  </url>
+
+  <url>
+    <loc>https://yourdomain.com/ru/works</loc>
+  </url>
+
+
+  <!-- Privacy Policy -->
+  <url>
+    <loc>https://yourdomain.com/et/privacy</loc>
+  </url>
+
+  <url>
+    <loc>https://yourdomain.com/en/privacy</loc>
+  </url>
+
+  <url>
+    <loc>https://yourdomain.com/ru/privacy</loc>
+  </url>
+
+</urlset>

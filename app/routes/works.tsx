@@ -1,63 +1,59 @@
-import { Link, redirect, useParams } from "react-router";
+import { Link, useParams } from "react-router";
 import type { Route } from "./+types/works";
 
-import { WorksHeader, WorksVideosList } from "~/components/works";
 import { ArrowLeft } from "lucide-react";
+
+import { WorksHeader, WorksVideosList } from "~/components/works";
 import Question from "~/components/Question";
-import isLangShouldBeNormalized from "~/utils/isLangShouldBeNormalized";
-import normalizeLanguage from "~/utils/normalizeLanguage";
+import { videosConfig } from "~/config/videos";
 
 const supportedLanguages = ["ru", "et", "en"] as const;
 
 type SupportedLanguage = (typeof supportedLanguages)[number];
-
-const translations = {
-  backToHome: {
-    et: "Tagasi avalehele",
-    en: "Back to home",
-    ru: "На главную",
-  },
-  storyCouldBeNext: {
-    et: "Järgmine lugu võiks olla sinu oma",
-    en: "Your story could be next",
-    ru: "Следующей может стать ваша история",
-  },
-
-  tellMeYourIdea: {
-    et: "Räägi mulle oma ideest. Teeme sellest filmi.",
-    en: "Tell me what you have in mind. Let's make it a film.",
-    ru: "Расскажите, что вы задумали. Давайте превратим это в фильм.",
-  },
-};
 
 const BASE_URL = "https://yourdomain.com";
 
 const seo = {
   et: {
     title: "Videograafi portfoolio | Pulmad, brändid ja üritused",
+
     description:
       "Vaata valikut videoprojektidest: pulmafilmid, brändivideod, üritused ja sotsiaalmeedia sisu. Professionaalne videograafia üle Euroopa.",
+
     keywords:
       "videograafi portfoolio, videograaf, pulmafilm, brändivideo, ürituste videograaf, videoproduktsioon, videosisu",
+
     ogLocale: "et_EE",
+
+    pageName: "Videograafi portfoolio",
   },
 
   en: {
     title: "Videography Portfolio | Weddings, Brands & Events",
+
     description:
       "Explore selected video work across weddings, brands, events, and social media. Professional videography and video production across Europe.",
+
     keywords:
       "videography portfolio, videographer, wedding film, brand video, event videographer, video production, social media video",
+
     ogLocale: "en_GB",
+
+    pageName: "Videography Portfolio",
   },
 
   ru: {
     title: "Портфолио видеографа | Свадьбы, бренды и мероприятия",
+
     description:
       "Примеры видеоработ: свадебные фильмы, проекты для брендов, мероприятия и видео для социальных сетей. Профессиональная видеосъёмка по всей Европе.",
+
     keywords:
       "портфолио видеографа, видеограф, свадебный фильм, видео для брендов, съёмка мероприятий, видеопродакшн, видео для соцсетей",
+
     ogLocale: "ru_RU",
+
+    pageName: "Портфолио видеографа",
   },
 } as const;
 
@@ -69,13 +65,8 @@ function getLanguage(lang: string | undefined): SupportedLanguage {
   return "et";
 }
 
-export const loader = async ({ params }: Route.LoaderArgs) => {
-  const { lang } = params;
-
-  if (isLangShouldBeNormalized(lang)) {
-    const normalizedLang = normalizeLanguage(lang);
-    return redirect(`/${normalizedLang}`, { status: 301 });
-  }
+export const loader = async ({}: Route.LoaderArgs) => {
+  console.log("Works route intercepted");
 
   return null;
 };
@@ -93,10 +84,12 @@ export function meta({ params }: Route.MetaArgs) {
     {
       title,
     },
+
     {
       name: "description",
       content: description,
     },
+
     {
       name: "keywords",
       content: keywords,
@@ -107,22 +100,27 @@ export function meta({ params }: Route.MetaArgs) {
       property: "og:title",
       content: title,
     },
+
     {
       property: "og:description",
       content: description,
     },
+
     {
       property: "og:type",
       content: "website",
     },
+
     {
       property: "og:url",
       content: url,
     },
+
     {
       property: "og:image",
       content: image,
     },
+
     {
       property: "og:locale",
       content: ogLocale,
@@ -133,14 +131,17 @@ export function meta({ params }: Route.MetaArgs) {
       name: "twitter:card",
       content: "summary_large_image",
     },
+
     {
       name: "twitter:title",
       content: title,
     },
+
     {
       name: "twitter:description",
       content: description,
     },
+
     {
       name: "twitter:image",
       content: image,
@@ -158,7 +159,129 @@ const WorksRoute = () => {
   const { lang } = useParams();
 
   const currentLang = getLanguage(lang);
-  const normalizedLang = normalizeLanguage(lang!);
+
+  const { title, description, pageName } = seo[currentLang];
+
+  const url = `${BASE_URL}/${currentLang}/works`;
+
+  /*
+   * Create a VideoObject for every portfolio video.
+   *
+   * Mux thumbnail:
+   * https://image.mux.com/{PLAYBACK_ID}/thumbnail.jpg
+   *
+   * Mux HLS stream:
+   * https://stream.mux.com/{PLAYBACK_ID}.m3u8
+   *
+   * Mux embedded player:
+   * https://player.mux.com/{PLAYBACK_ID}
+   */
+  const videoStructuredData = videosConfig.map((video) => ({
+    "@type": "VideoObject",
+
+    "@id": `${url}#video-${video.playbackId}`,
+
+    name: video.title[currentLang],
+
+    description: video.description[currentLang],
+
+    thumbnailUrl: [`https://image.mux.com/${video.playbackId}/thumbnail.jpg`],
+
+    uploadDate: video.uploadDate,
+
+    contentUrl: `https://stream.mux.com/${video.playbackId}.m3u8`,
+
+    embedUrl: `https://player.mux.com/${video.playbackId}`,
+
+    inLanguage: currentLang,
+
+    creator: {
+      "@type": "Person",
+      name: "Kirill Bagrin",
+      url: BASE_URL,
+    },
+  }));
+
+  const structuredData = {
+    "@context": "https://schema.org",
+
+    "@graph": [
+      /*
+       * Portfolio page
+       */
+      {
+        "@type": "CollectionPage",
+
+        "@id": `${url}#webpage`,
+
+        url,
+
+        name: pageName,
+
+        headline: title,
+
+        description,
+
+        inLanguage: currentLang,
+
+        isPartOf: {
+          "@id": `${BASE_URL}/#website`,
+        },
+
+        about: {
+          "@id": `${BASE_URL}/#videography-service`,
+        },
+
+        /*
+         * Connect the portfolio page with the videos below.
+         */
+        hasPart: videosConfig.map((video) => ({
+          "@id": `${url}#video-${video.playbackId}`,
+        })),
+      },
+
+      /*
+       * Individual videos
+       */
+      ...videoStructuredData,
+
+      /*
+       * Breadcrumbs
+       */
+      {
+        "@type": "BreadcrumbList",
+
+        "@id": `${url}#breadcrumb`,
+
+        itemListElement: [
+          {
+            "@type": "ListItem",
+
+            position: 1,
+
+            name:
+              currentLang === "et"
+                ? "Avaleht"
+                : currentLang === "ru"
+                  ? "Главная"
+                  : "Home",
+
+            item: `${BASE_URL}/${currentLang}`,
+          },
+
+          {
+            "@type": "ListItem",
+
+            position: 2,
+
+            name: pageName,
+
+            item: url,
+          },
+        ],
+      },
+    ],
+  };
 
   const getValidPath = () => {
     return `/${currentLang}`;
@@ -182,7 +305,15 @@ const WorksRoute = () => {
         href={`${BASE_URL}/en/works`}
       />
 
-      <main className="wrap-break-word">
+      {/* Structured data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(structuredData),
+        }}
+      />
+
+      <main>
         <section>
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-5">
             <Link
@@ -190,7 +321,12 @@ const WorksRoute = () => {
               className="flex items-center justify-start gap-x-2 text-blue-500"
             >
               <ArrowLeft />
-              {translations.backToHome[normalizedLang]}
+
+              {currentLang === "et"
+                ? "Tagasi avalehele"
+                : currentLang === "ru"
+                  ? "На главную"
+                  : "Back to home"}
             </Link>
           </div>
         </section>
@@ -200,8 +336,8 @@ const WorksRoute = () => {
         <WorksVideosList />
 
         <Question
-          headerText={translations.storyCouldBeNext[normalizedLang]}
-          subHeaderText={translations.tellMeYourIdea[normalizedLang]}
+          headerText="Your story could be next"
+          subHeaderText="Tell me what you have in mind. Let's make it a film."
         />
       </main>
     </>
