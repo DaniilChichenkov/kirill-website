@@ -1,131 +1,126 @@
 import { MoveUpRight } from "lucide-react";
-import Wedding from "~/src/wedding-example.jpg";
-import Car from "~/src/car.jpg";
-import type { Route } from "../+types/root";
+import type { CSSProperties } from "react";
 import { Link, useParams } from "react-router";
+
+import locale from "~/translations/Client/portfolio";
+import normalizeLanguage from "~/utils/normalizeLanguage";
+
+import MuxPlayer from "@mux/mux-player-react/lazy";
 
 const supportedLanguages = ["ru", "et", "en"];
 
+const portfolioItemsConfig = [
+  // Wedding video
+  {
+    playbackId: "sda50102hlnrK02A8Pmkx02vyGM9M98NDMLu024SUYpxeMXY",
+    title: {
+      et: "Koos, loomulikult.",
+      en: "Together, naturally.",
+      ru: "Вместе, как и должно быть.",
+    },
+
+    category: {
+      et: "Pulmafilm",
+      en: "Wedding film",
+      ru: "Свадебный фильм",
+    },
+  },
+
+  // Shop promotion
+  {
+    playbackId: "guhEkL5QnoKQhQlA5KQcSLnCgX5TcLtLFcklVqNGrpU",
+    title: {
+      et: "Kõik hubase kodu heaks.",
+      en: "Everything for a better home.",
+      ru: "Всё для уюта в доме.",
+    },
+
+    category: {
+      et: "Poe reklaamvideo",
+      en: "Store promotional film",
+      ru: "Рекламное видео магазина",
+    },
+  },
+];
+
+const playerStyle = {
+  aspectRatio: "16 / 9",
+  "--media-object-fit": "cover",
+  "--media-object-position": "center",
+} as CSSProperties;
+
 const Portfolio = () => {
   const { lang } = useParams();
+  const normalizedLang = normalizeLanguage(lang!);
 
   const getValidPath = () => {
     if (!lang || !supportedLanguages.includes(lang)) {
       return "/et/works";
     }
+
     return `/${lang}/works`;
   };
 
   return (
-    <section>
+    <section id="portfolio">
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
         <div className="space-y-4 md:space-y-8">
+          {/* Heading */}
           <div className="w-full">
-            <p className="text-xs text-pretty text-gray-700 sm:text-lg/relaxed uppercase tracking-wider">
-              The Portfolio
+            <p className="text-xs text-pretty text-gray-700 uppercase tracking-wider sm:text-lg/relaxed">
+              {locale.portfolioEyebrow[normalizedLang]}
             </p>
-            <div className="w-full flex justify-between items-center">
-              <h2 className="text-3xl md:text-4xl font-semibold text-gray-900">
-                Stores in motion.
+
+            <div className="flex w-full items-center justify-between">
+              <h2 className="text-3xl font-semibold text-gray-900 md:text-4xl">
+                {locale.portfolioTitle[normalizedLang]}
               </h2>
+
               <Link
                 to={getValidPath()}
-                className="lg:flex hidden cursor-pointer justify-center items-center gap-x-3 px-5 py-3 font-medium text-blue-500 transition-colors hover:text-blue-900"
+                className="hidden cursor-pointer items-center justify-center gap-x-3 px-5 py-3 font-medium text-blue-500 transition-colors hover:text-blue-900 md:flex"
               >
-                View more films <MoveUpRight />
+                {locale.viewMoreFilms[normalizedLang]}
+                <MoveUpRight />
               </Link>
             </div>
           </div>
 
-          <div className="flex flex-col gap-y-10 lg:flex-row lg:gap-x-10">
-            <div className="block">
-              <button
-                type="button"
-                // onClick={openShowreel}
-                aria-label="Watch showreel"
-                aria-haspopup="dialog"
-                className="group relative block w-full overflow-hidden rounded-lg
-                   focus-visible:outline-4 focus-visible:outline-blue-600"
-              >
-                <img
-                  src={Wedding}
-                  alt=""
-                  width={1280}
-                  height={720}
-                  className="aspect-video w-full object-cover"
-                />
+          {/* Portfolio cards */}
+          <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
+            {portfolioItemsConfig.map((item) => (
+              <article className="min-w-0" key={item.playbackId}>
+                <div className="flex aspect-video w-full overflow-hidden rounded-lg bg-black">
+                  <MuxPlayer
+                    playbackId={item.playbackId}
+                    preload="none"
+                    loading="viewport"
+                    videoTitle={item.title[normalizedLang]}
+                    className="block h-full w-full"
+                    style={playerStyle}
+                    disableCookies={true}
+                    disableTracking={true}
+                    noVolumePref={true}
+                    noMutedPref={true}
+                  />
+                </div>
 
-                <span
-                  className="absolute inset-0 flex flex-col items-center
-                     justify-center gap-3 bg-black/20"
-                >
-                  <span
-                    aria-hidden="true"
-                    className="flex size-16 items-center justify-center rounded-full
-                       bg-white text-2xl text-slate-950
-                       group-hover:bg-blue-100"
-                  >
-                    ▶
-                  </span>
-                </span>
-              </button>
+                <h3 className="mt-4 text-lg font-bold text-gray-900 sm:text-xl">
+                  {item.title[normalizedLang]}
+                </h3>
 
-              <h3 className="mt-4 text-lg font-bold text-gray-900 sm:text-xl">
-                Together, naturally.
-              </h3>
+                <p className="text-xs text-pretty text-gray-700 uppercase tracking-wider sm:text-lg/relaxed">
+                  {item.category[normalizedLang]}
+                </p>
+              </article>
+            ))}
 
-              <p className="text-xs text-pretty text-gray-700 sm:text-lg/relaxed uppercase tracking-wider">
-                Wedding film
-              </p>
-            </div>
-
-            <div className="block lg:mt-10">
-              <button
-                type="button"
-                // onClick={openShowreel}
-                aria-label="Watch showreel"
-                aria-haspopup="dialog"
-                className="group relative block w-full overflow-hidden rounded-lg
-                   focus-visible:outline-4 focus-visible:outline-blue-600"
-              >
-                <img
-                  src={Car}
-                  alt=""
-                  width={1280}
-                  height={720}
-                  className="aspect-video w-full object-cover"
-                />
-
-                <span
-                  className="absolute inset-0 flex flex-col items-center
-                     justify-center gap-3 bg-black/20"
-                >
-                  <span
-                    aria-hidden="true"
-                    className="flex size-16 items-center justify-center rounded-full
-                       bg-white text-2xl text-slate-950
-                       group-hover:bg-blue-100"
-                  >
-                    ▶
-                  </span>
-                </span>
-              </button>
-
-              <h3 className="mt-4 text-lg font-bold text-gray-900 sm:text-xl">
-                Coolest car in the world.
-              </h3>
-
-              <p className="text-xs text-pretty text-gray-700 sm:text-lg/relaxed uppercase tracking-wider">
-                Vehicle review
-              </p>
-            </div>
-
-            {/* More films link */}
             <Link
               to={getValidPath()}
-              className="flex lg:hidden cursor-pointer justify-center items-center gap-x-3 px-5 py-3 font-medium text-blue-500 transition-colors hover:text-blue-900"
+              className="flex cursor-pointer items-center justify-center gap-x-3 px-5 py-3 font-medium text-blue-500 transition-colors hover:text-blue-900 md:hidden"
             >
-              View more films <MoveUpRight />
+              {locale.viewMoreFilms[normalizedLang]}
+              <MoveUpRight />
             </Link>
           </div>
         </div>

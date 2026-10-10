@@ -1,6 +1,13 @@
 import { Play } from "lucide-react";
+import { Link, useParams } from "react-router";
+
+import locale from "~/translations/Client/footer";
+import normalizeLanguage from "~/utils/normalizeLanguage";
 
 const Footer = () => {
+  const { lang } = useParams();
+  const normalizedLang = normalizeLanguage(lang!);
+
   return (
     <footer>
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
@@ -12,12 +19,17 @@ const Footer = () => {
                 fill="oklch(62.3% 0.214 259.815)"
                 color="oklch(62.3% 0.214 259.815)"
               />
-              <span className="font-bold text-lg uppercase">Videographer</span>
+              <span className="font-bold text-lg uppercase">
+                {locale.videographer[normalizedLang]}
+              </span>
             </a>
           </div>
 
           {/* Links */}
-          <div className="w-full md:w-auto flex justify-start items-center mt-10 gap-x-5 md:mt-0">
+          <div className="w-full md:w-auto flex flex-col gap-y-5 md:flex-row justify-start items-center mt-10 gap-x-5 md:mt-0">
+            <Link to={`/${normalizedLang}/privacy-policy`}>
+              {locale.privacyPolicy[normalizedLang]}
+            </Link>
             <a href="">Instagram</a>
             <a href="">TikTok</a>
           </div>
