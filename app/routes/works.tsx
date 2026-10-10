@@ -1,4 +1,4 @@
-import { Link, useParams } from "react-router";
+import { Link, redirect, useParams } from "react-router";
 import type { Route } from "./+types/works";
 
 import { ArrowLeft } from "lucide-react";
@@ -6,6 +6,8 @@ import { ArrowLeft } from "lucide-react";
 import { WorksHeader, WorksVideosList } from "~/components/works";
 import Question from "~/components/Question";
 import { videosConfig } from "~/config/videos";
+import isLangShouldBeNormalized from "~/utils/isLangShouldBeNormalized";
+import normalizeLanguage from "~/utils/normalizeLanguage";
 
 const supportedLanguages = ["ru", "et", "en"] as const;
 
@@ -65,8 +67,27 @@ function getLanguage(lang: string | undefined): SupportedLanguage {
   return "et";
 }
 
-export const loader = async ({}: Route.LoaderArgs) => {
-  console.log("Works route intercepted");
+const translations = {
+  storyCouldBeNext: {
+    et: "Järgmine lugu võiks olla sinu oma",
+    en: "Your story could be next",
+    ru: "Следующей может стать ваша история",
+  },
+
+  tellMeYourIdea: {
+    et: "Räägi mulle, mida sul mõttes on. Teeme sellest filmi.",
+    en: "Tell me what you have in mind. Let's make it a film.",
+    ru: "Расскажите, что вы задумали. Давайте превратим это в фильм.",
+  },
+} as const;
+
+export const loader = async ({ params }: Route.LoaderArgs) => {
+  const { lang } = params;
+
+  if (isLangShouldBeNormalized(lang)) {
+    const normalizedLang = normalizeLanguage(lang);
+    return redirect(`/${normalizedLang}`, { status: 301 });
+  }
 
   return null;
 };
@@ -336,8 +357,8 @@ const WorksRoute = () => {
         <WorksVideosList />
 
         <Question
-          headerText="Your story could be next"
-          subHeaderText="Tell me what you have in mind. Let's make it a film."
+          headerText={translations.storyCouldBeNext[currentLang]}
+          subHeaderText={translations.tellMeYourIdea[currentLang]}
         />
       </main>
     </>
