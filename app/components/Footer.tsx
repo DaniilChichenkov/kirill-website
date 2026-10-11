@@ -30,8 +30,27 @@ const Footer = () => {
             <Link to={`/${normalizedLang}/privacy-policy`}>
               {locale.privacyPolicy[normalizedLang]}
             </Link>
-            <a href="">Instagram</a>
-            <a href="">TikTok</a>
+            <a
+              href="https://www.instagram.com/kirbagrin/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Instagram
+            </a>
+            <a
+              href="https://www.facebook.com/share/1E2cNTsDFV/?mibextid=wwXIfr"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Facebook
+            </a>
+            <a
+              href="https://www.linkedin.com/in/bagrinportfolio?utm_source=share_via&utm_content=profile&utm_medium=member_ios"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Linkedin
+            </a>
           </div>
         </div>
       </div>
