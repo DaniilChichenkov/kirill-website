@@ -16,8 +16,5 @@ export function createTables(db: Database) {
       telegram_bot_token_auth_tag TEXT,
       chat_id TEXT
     );
-
-    CREATE INDEX IF NOT EXISTS idx_enquiry_quiz_enquiry_id
-    ON enquiry_quiz(enquiry_id);
   `);
 }

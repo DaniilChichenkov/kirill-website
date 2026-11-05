@@ -63,7 +63,7 @@ const Hero = () => {
                     .querySelector("#quiz")
                     ?.scrollIntoView({ behavior: "smooth", block: "center" });
                 }}
-                className="cursor-pointer flex items-center justify-center gap-2 mt-5 border border-blue-500 bg-blue-500 px-5 py-3 font-medium text-white shadow-sm transition-colors hover:bg-blue-600"
+                className="w-full cursor-pointer flex items-center justify-center gap-2 mt-5 border border-blue-500 bg-blue-500 px-5 py-3 font-medium text-white shadow-sm transition-colors hover:bg-blue-600"
               >
                 {locale.startProject[normalizedLang]} <ArrowRight />
               </button>
