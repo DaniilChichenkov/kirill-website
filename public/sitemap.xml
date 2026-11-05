@@ -4,43 +4,43 @@
 
   <!-- Home -->
   <url>
-    <loc>https://yourdomain.com/et</loc>
+    <loc>https://kirbagrin.com/et</loc>
   </url>
 
   <url>
-    <loc>https://yourdomain.com/en</loc>
+    <loc>https://kirbagrin.com/en</loc>
   </url>
 
   <url>
-    <loc>https://yourdomain.com/ru</loc>
+    <loc>https://kirbagrin.com/ru</loc>
   </url>
 
 
   <!-- Portfolio -->
   <url>
-    <loc>https://yourdomain.com/et/works</loc>
+    <loc>https://kirbagrin.com/et/works</loc>
   </url>
 
   <url>
-    <loc>https://yourdomain.com/en/works</loc>
+    <loc>https://kirbagrin.com/en/works</loc>
   </url>
 
   <url>
-    <loc>https://yourdomain.com/ru/works</loc>
+    <loc>https://kirbagrin.com/ru/works</loc>
   </url>
 
 
   <!-- Privacy Policy -->
   <url>
-    <loc>https://yourdomain.com/et/privacy</loc>
+    <loc>https://kirbagrin.com/et/privacy</loc>
   </url>
 
   <url>
-    <loc>https://yourdomain.com/en/privacy</loc>
+    <loc>https://kirbagrin.com/en/privacy</loc>
   </url>
 
   <url>
-    <loc>https://yourdomain.com/ru/privacy</loc>
+    <loc>https://kirbagrin.com/ru/privacy</loc>
   </url>
 
 </urlset>

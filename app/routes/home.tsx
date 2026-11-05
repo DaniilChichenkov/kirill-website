@@ -26,7 +26,7 @@ const supportedLanguages = ["et", "en", "ru"] as const;
 
 type SupportedLanguage = (typeof supportedLanguages)[number];
 
-const BASE_URL = "https://yourdomain.com";
+const BASE_URL = "https://kirbagrin.com";
 
 const seo = {
   et: {
